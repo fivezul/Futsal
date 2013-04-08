@@ -1,0 +1,1070 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Futsal5ive</title>
+
+	  <link rel="stylesheet" href="js/jquery.mobile-1.3.0.css" />
+	  <link rel="stylesheet" href="js/main.css" />
+	  <script src="js/jquery.js"></script>
+	  <script src="js/jquery.mobile-1.3.0.js"></script>
+	  <script src="cordova-2.5.0.js"></script>
+	  <script src="js/main.js"></script>
+	<script>
+		$( document ).on( "pageinit", "#main-page", function() {
+
+			$( document ).on( "swipeleft swiperight", "#main-page", function( e ) {
+				// We check if there is no open panel on the page because otherwise
+				// a swipe to close the left panel would also open the right panel (and v.v.).
+				// We do this by checking the data that the framework stores on the page element (panel: open).
+				if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
+					if ( e.type === "swipeleft"  ) {
+						$( "#right-panel" ).panel( "open" );
+					} else if ( e.type === "swiperight" ) {
+						$( "#left-panel" ).panel( "open" );
+					}
+				}
+			});
+		});
+		
+    </script>
+	<style>
+		/* Swipe works with mouse as well but often causes text selection. */
+		#main-page * {
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			-o-user-select: none;
+			user-select: none;
+		}
+		/* Arrow only buttons in the header. */
+		#main-page .ui-header .ui-btn {
+			background: none;
+			border: none;
+			top: 9px;
+		}
+		#main-page .ui-header .ui-btn-inner {
+			border: none;
+		}
+		/* Content styling. */
+		dl { font-family: "Times New Roman", Times, serif; padding: 1em; }
+		dt { font-size: 2em; font-weight: bold; }
+		dt span { font-size: .5em; color: #777; margin-left: .5em; }
+		dd { font-size: 1.25em;	margin: 1em 0 0; padding-bottom: 1em; border-bottom: 1px solid #eee; }
+		.back-btn { float: right; margin: 0 2em 1em 0; }
+	</style>
+  </head>
+  <body onload="init();" id="stage" class="theme">
+	<div data-role="page" id="main-page" data-theme="d">
+
+    <div data-role="header" data-theme="b">
+        <h1 id=main_header_team_name>Bola & Futsal</h1>
+		<a href="#left-panel" data-theme="d" data-icon="grid" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Open left panel</a>
+		</div><!-- /header -->
+
+    <div data-role="content">
+    	<a data-role="button" data-transition="slideup" data-theme="b" href="#team-page"
+        data-icon="home" data-iconpos="right">
+            MyTeam
+        </a>
+        
+        <a data-role="button" data-transition="slide" href="#tournament-page">
+            Tournament
+        </a>
+        <a data-role="button" data-transition="slide" href="#team-page">
+            Team Profile
+        </a>
+        <a data-role="button" data-transition="slideup" href="#toprank-page">
+            Ranking
+        </a>
+        <a data-role="button" data-transition="slide" href="#challenge-page">
+            Challange
+        </a>
+        <a data-role="button" data-transition="slide" href="#quiz-page">
+            Quiz
+        </a>
+        <a data-role="button" data-transition="slide" href="#toprank-page">
+            Time Attack
+        </a>
+        
+		<ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                Last Result
+            </li>
+            <li data-theme="c" style="color:Green;">
+                vs GombakTeam
+                <span class="ui-li-count" style="color:Green;">
+                    W
+                </span>
+            </li>
+            <li data-theme="c" style="color:Red;">
+                vs Selangor square
+                <span class="ui-li-count" style="color:Red;">
+                    L
+                </span>
+            </li>
+            <li data-theme="c">
+                vs Cyberjaya
+                <span class="ui-li-count">
+                    D
+                </span>
+            </li>
+        </ul>
+    </div><!-- /content -->
+
+    <div data-role="panel" id="left-panel" data-theme="b" data-position-fixed="true">
+<a data-role="button" href="#user-page" data-transition="slide">
+            Mohd Faizul
+        </a>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                Event
+            </li>
+            <li data-theme="c">
+                <a href="#message-page" data-transition="slide">
+                    Message
+                    <span class="ui-li-count">
+                        10
+                    </span>
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#challenge-page" data-transition="slide">
+                    Challenge
+                    <span class="ui-li-count">
+                        0
+                    </span>
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#tournament-page" data-transition="slide">
+                    Tournament
+                    <span class="ui-li-count">
+                        0
+                    </span>
+                </a>
+            </li>
+            <li data-role="list-divider" role="heading">
+                Team
+            </li>
+            <li data-theme="c">
+                <a href="#teamcreate-page" data-transition="slide">
+                    New Team
+                </a>
+            </li>
+        </ul>
+		<a id="login_panel" href="#login-page" data-role="button" data-mini="false" data-inline="false"  data-iconpos="right">Login</a>
+		<a href="#" data-rel="close" data-role="button" data-mini="false" data-inline="false" data-icon="delete" data-iconpos="right">Close</a>
+		
+	</div><!-- /page -->
+	</div>
+	
+	<!-- Start of second page -->
+	<div data-role="page" id="toprank-page" data-theme="d">
+		<div data-role="header" data-theme="b" >
+			<a data-role="button" data-transition="slidedown" href="#main-page" data-icon="back"
+	        	data-iconpos="left" class="ui-btn-left">
+	            Back
+	        </a>
+			<h1>Ranking</h1>
+		</div><!-- /header -->
+	
+		<div data-role="content">
+			<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Edit" data-column-popup-theme="a">
+         <thead>
+           <tr class="ui-toprank-page-d">
+             <th data-priority="2">Rank</th>
+             <th>Team</th>
+             <th data-priority="1">Win</th>
+             <th data-priority="3"><abbr title="Rotten Tomato Rating">Draw</abbr></th>
+             <th data-priority="4">Lose</th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr>
+             <th>1</th>
+             <td><a href="#teamdetail-page">Selangor Rock</a></td>
+             <td>1941</td>
+             <td>100</td>
+             <td>74</td>
+           </tr>
+           <tr>
+             <th>2</th>
+             <td><a href="#teamdetail-page">NS Pro</a></td>
+             <td>1942</td>
+             <td>97</td>
+             <td>64</td>
+           </tr>
+           <tr>
+             <th>3</th>
+             <td><a href="#teamdetail-page">The Godfather</a></td>
+             <td>1972</td>
+             <td>97</td>
+             <td>87</td>
+           </tr>
+           <tr>
+             <th>4</th>
+             <td><a href="#teamdetail-page">Gone with the Wind</a></td>
+             <td>1939</td>
+             <td>96</td>
+             <td>87</td>
+           </tr>
+           <tr>
+             <th>5</th>
+             <td><a href="#teamdetail-page">Lawrence Arabia</a></td>
+             <td>1962</td>
+             <td>94</td>
+             <td>87</td>
+           </tr>
+           <tr>
+             <th>6</th>
+             <td><a href="#teamdetail-page">Dr. Strangelov</a></td>
+             <td>1964</td>
+             <td>92</td>
+             <td>74</td>
+           </tr>
+           <tr>
+             <th>7</th>
+             <td><a href="#teamdetail-page">The Graduate</a></td>
+             <td>1967</td>
+             <td>91</td>
+             <td>122</td>
+           </tr>
+           <tr>
+             <th>8</th>
+             <td><a href="#teamdetail-page">The Wizard of Oz</a></td>
+             <td>1939</td>
+             <td>90</td>
+             <td>72</td>
+           </tr>
+           <tr>
+             <th>9</th>
+             <td><a href="#teamdetail-page">The Rain</a></td>
+             <td>1952</td>
+             <td>89</td>
+             <td>85</td>
+           </tr>
+           <tr>
+             <th>10</th>
+             <td><a href="#teamdetail-page">Inception</a></td>
+             <td>2010</td>
+             <td>84</td>
+             <td>78</td>
+           </tr>
+         </tbody>
+       </table>
+		</div><!-- /content -->
+
+	</div><!-- /page -->
+	
+	<div data-role="page" id="teamdetail-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" data-transition="slide" data-direction="reverse" href="#main-page" data-icon="back"
+        data-iconpos="left" class="ui-btn-left">
+            Back
+        </a>
+        <h3 id="team_detail_header">
+            Team Details
+        </h3>
+    </div>
+    <div data-role="content">
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                    	<div style="width: 90px; height: 90px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;"
+                        id="team_image">
+                            <img id="team_image" src="http://codiqa.com/static/images/v2/image.png"
+                            alt="image" style="position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -18px">
+                        </div>
+                    </div>
+                    <div class="ui-block-b">
+                    </div>
+                </div>
+            </div>
+            <div class="ui-block-b">
+                <div class="ui-grid-b">
+                    <div class="ui-block-a">Win<br>80
+                    </div>
+                    <div class="ui-block-b">Draw<br>5
+                    </div>
+                    <div class="ui-block-c">Lose<br>15
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui-grid-d">
+            <div class="ui-block-a">Game <br>100
+            </div>
+            <div class="ui-block-b">Rank <br>1st
+            </div>
+            <div class="ui-block-c">Goal <br>300
+            </div>
+            <div class="ui-block-d">Bolos <br>20
+            </div>
+            <div class="ui-block-e">Point <br>1000Pts
+            </div>
+        </div>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                Player List
+            </li>
+            <li data-theme="c">
+                P1
+            </li>
+            <li data-theme="c">
+                P2
+            </li>
+            <li data-theme="c">
+                P3
+            </li>
+            <li data-theme="c">
+                P4
+            </li>
+            <li data-theme="c">
+                P5
+            </li>
+        </ul>
+    </div>
+	</div>
+	
+	<!-- challenge-page -->
+<div data-role="page" id="challenge-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="#main-page" class="ui-btn-left">
+            Main
+        </a>
+        <a data-role="button" href="#challengecreate-page" class="ui-btn-right">
+            Create
+        </a>
+        <h3>
+            challenge
+        </h3>
+    </div>
+    <div data-role="content">
+        <div data-role="fieldcontain">
+            <label for="selectmenu1">
+            </label>
+            <select name="state_btn">
+                <option value="Selangor">
+                    Selangor
+                </option>
+                <option value="all">
+                    All
+                </option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu2">
+            </label>
+            <select name="">
+                <option value="option1">
+                    Selayang
+                </option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu3">
+            </label>
+            <select name="">
+                <option value="1">
+                    FutsalSelayangCorner
+                </option>
+            </select>
+        </div>
+        <a data-role="button" href="#challengelist-page">
+            Search
+        </a>
+    </div>
+	</div>
+	
+	<!-- ChallengeLsit -->
+<div data-role="page" id="challengelist-page">
+    <div data-theme="b" data-role="header">
+        <h3>
+            challenge List
+        </h3>
+    </div>
+    <div data-role="content">
+        <a data-role="button" href="chellengelist-page" data-icon="refresh" data-iconpos="right">
+            15 Found
+        </a>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-theme="c">
+                <a href="#challengedetail-page" data-transition="slide">
+                    challenge 1
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#challengedetail-page" data-transition="slide">
+                    challenge 2
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#challengedetail-page" data-transition="slide">
+                    challenge 3
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#challengedetail-page" data-transition="slide">
+                    challenge 4
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#challengedetail-page" data-transition="slide">
+                    Challange5
+                </a>
+            </li>
+        </ul>
+        <a data-role="button" href="#challengelist-page" data-transition="slide" data-icon="arrow-r" data-iconpos="right">
+            Next Challanges
+        </a>
+    </div>
+	</div>
+	
+	<!-- challengedetail -->
+	<div data-role="page" id="challengedetail-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="#main-page" data-icon="arrow-l" data-iconpos="left"
+        class="ui-btn-left">
+            Back
+        </a>
+        <h3>
+            Challange Detail
+        </h3>
+    </div>
+    <div data-role="content">
+        <div style="width: 288px; height: 100px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;">
+            <img src="http://codiqa.com/static/images/v2/image.png" alt="image" style="position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -18px">
+        </div>
+        <div data-role="navbar" data-iconpos="top">
+            <ul>
+                <li>
+                    <a href="#page1" data-transition="fade" data-theme="" data-icon="">
+                        Challange !!!
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                Venue
+            </li>
+            <li data-theme="c">
+                SelayangFutsalCorner
+            </li>
+            <li data-role="list-divider" role="heading">
+                Date
+            </li>
+            <li data-theme="c">
+                12-12-2013
+            </li>
+            <li data-role="list-divider" role="heading">
+                Time
+            </li>
+            <li data-theme="c">
+                8:00PM - 9:30PM
+            </li>
+        </ul>
+    </div>
+	</div>
+	
+	<!-- user page -->
+	<div data-role="page" id="user-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button"  onclick="save_profile();" class="ui-btn-right">
+            Save
+        </a>
+        <h3>
+            Mohd Faizul
+        </h3>
+    </div>
+    <div data-role="content">
+        <div class="ui-grid-b">
+            <div class="ui-block-a">
+            </div>
+            <div class="ui-block-b">
+                <div style="width: 100px; height: 100px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;">
+                    <img src="http://codiqa.com/static/images/v2/image.png" alt="image" style="position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -18px">
+                </div>
+            </div>
+            <div class="ui-block-c">
+            </div>
+        </div>
+        <div data-role="fieldcontain" id="name_id">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="name_id">
+                    Name
+                </label>
+                <input name="name_txt" id="name_id_txt" placeholder="" value="Mohd Faizul"
+                type="text">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain" id="hp_id">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="hp_id">
+                    Handphone
+                </label>
+                <input name="hp_txt" id="hp_id_txt" placeholder="Enter your phone" value=""
+                type="tel">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain" id="username_id">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="username_id">
+                    Username
+                </label>
+                <input name="username_txt" id="username_id_txt" placeholder="Enter your email" value=""
+                type="email">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain" id="password_id">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="password_id">
+                    Password
+                </label>
+                <input name="password_txt" id="password_id_txt" placeholder="" value="test123"
+                type="password">
+            </fieldset>
+        </div>
+        <a data-role="button" onclick="save_profile();">
+            Save
+        </a>
+    </div>
+	</div>
+	
+	<!-- Login -->
+	<div data-role="page" id="login-page">
+    <div data-theme="b" data-role="header">
+        <h3>
+            Login
+        </h3>
+    </div>
+    <div data-role="content">
+        <div class="ui-grid-b">
+            <div class="ui-block-a">
+            </div>
+            <div class="ui-block-b">
+                <div style="width: 100px; height: 100px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;">
+                    <img src="http://codiqa.com/static/images/v2/image.png" alt="image" style="position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -18px">
+                </div>
+            </div>
+            <div class="ui-block-c">
+            </div>
+        </div>
+        <div data-role="fieldcontain" id="username_id">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="username_id">
+                    Username
+                </label>
+                <input name="username_txt" id="username_id" placeholder="" value="faizul@dgcfc.com"
+                type="email">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain" id="password_id">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="password_id">
+                    Password
+                </label>
+                <input name="password_txt" id="password_id" placeholder="" value="test123"
+                type="password">
+            </fieldset>
+        </div>
+        <div data-role="navbar" data-iconpos="top">
+            <ul>
+                <li>
+                    <a onclick="handleLogin();" data-transition="fade" data-theme="" data-icon="">
+                        Login
+                    </a>
+                </li>
+                <li>
+                    <a href="#page1" data-transition="fade" data-theme="" data-icon="">
+                        Clear
+                    </a>
+                </li>
+                <li>
+                    <a href="#page1" data-transition="fade" data-theme="" data-icon="">
+                        Cancel
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+	</div>
+	
+	<!-- Tournament -->
+	<div data-role="page" id="tournament-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="#main-page" data-icon="home" data-iconpos="left"
+        class="ui-btn-left">
+            Main
+        </a>
+        <a data-role="button" href="#tournamentcreate-page" class="ui-btn-right">
+            Create
+        </a>
+        <h3>
+            Tournament
+        </h3>
+    </div>
+    <div data-role="content">
+       <div data-role="fieldcontain">
+            <label for="selectmenu1">
+            </label>
+            <select name="state_btn">
+                <option value="Selangor">
+                    Selangor
+                </option>
+                <option value="all">
+                    All
+                </option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu2">
+            </label>
+            <select name="">
+                <option value="option1">
+                    Selayang
+                </option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu3">
+            </label>
+            <select name="">
+                <option value="1">
+                    FutsalSelayangCorner
+                </option>
+            </select>
+        </div>
+        <a data-role="button" href="#tournamentlist-page">
+            Search
+        </a>
+    </div>
+	</div>
+	
+	<!-- TournamentLsit -->
+<div data-role="page" id="tournamentlist-page">
+    <div data-theme="b" data-role="header">
+        <h3>
+            Tournament List
+        </h3>
+    </div>
+    <div data-role="content">
+        <a data-role="button" href="#tournamentlist-page" data-icon="refresh" data-iconpos="right">
+            15 Found
+        </a>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-theme="c">
+                <a href="#tournamentdetail-page" data-transition="slide">
+                    challenge 1
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#tournamentdetail-page" data-transition="slide">
+                    challenge 2
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#tournamentdetail-page" data-transition="slide">
+                    challenge 3
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#tournamentdetail-page" data-transition="slide">
+                    challenge 4
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#tournamentdetail-page" data-transition="slide">
+                    Challange5
+                </a>
+            </li>
+        </ul>
+        <a data-role="button" href="#tournamentlist-page" data-transition="slide" data-icon="arrow-r" data-iconpos="right">
+            Next Tournament
+        </a>
+    </div>
+	</div>
+	
+	
+	<!-- tournamentdetail -->
+	<div data-role="page" id="tournamentdetail-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="#main-page" data-icon="arrow-l" data-iconpos="left"
+        class="ui-btn-left">
+            Back
+        </a>
+        <h3>
+            TourtDetail
+        </h3>
+    </div>
+    <div data-role="content">
+        <div data-role="fieldcontain" id="tour_id">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="tour_id">
+                </label>
+                <input name="tour_txt" id="tour_id" placeholder="" value="Indie Cup" type="text">
+            </fieldset>
+        </div>
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+                <div style="width: 90px; height: 90px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;">
+                    <img src="http://codiqa.com/static/images/v2/image.png" alt="image" style="position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -18px">
+                </div>
+            </div>
+            <div class="ui-block-b">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                    </div>
+                    <div class="ui-block-b">
+                    </div>
+                    <div class="ui-block-a">
+                    </div>
+                    <div class="ui-block-b">
+                    </div>
+                    <div class="ui-block-a">
+                    </div>
+                    <div class="ui-block-b">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                Tournament Type
+            </li>
+            <li data-theme="c">
+                <a href="#page1" data-transition="slide">
+                    16/64 Team Participant
+                </a>
+            </li>
+        </ul>
+        <div data-role="navbar" data-iconpos="top">
+            <ul>
+                <li>
+                    <a href="#page1" data-transition="fade" data-theme="" data-icon="">
+                        Price
+                    </a>
+                </li>
+                <li>
+                    <a href="#page1" data-transition="fade" data-theme="" data-icon="">
+                        Join
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+	</div>
+	
+	<!-- #challengecreate-page -->
+	<div data-role="page" id="challengecreate-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="#challengecreatesave-page" class="ui-btn-right">
+            Create
+        </a>
+        <h3>
+            New Challange
+        </h3>
+    </div>
+    <div data-role="content">
+        <div data-role="fieldcontain">
+            <label for="selectmenu1">
+            </label>
+            <select name="" data-mini="true">
+                <option value="Selangor">
+                    Selangor
+                </option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu2">
+            </label>
+            <select name="" data-mini="true">
+                <option value="option1">
+                    Selayang
+                </option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu3">
+            </label>
+            <select name="" data-mini="true">
+                <option value="option1">
+                    Primise
+                </option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="textinput2">
+                </label>
+                <input name="" id="textinput2" placeholder="" value="12-12-2012" type="datetime">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="textinput3">
+                </label>
+                <input name="" id="textinput3" placeholder="" value="" type="tel">
+            </fieldset>
+        </div>
+        <a data-role="button" href="#page1">
+            Create
+        </a>
+    </div>
+	</div>
+	
+	<!-- LiveFeed -->
+	<div data-role="page" id="timeatk-page">
+    <div data-theme="b" data-role="header">
+        <h3>
+            Time Attack
+        </h3>
+    </div>
+    <div data-role="content">
+        <div class="ui-grid-a">
+            <div class="ui-block-a">Team A
+            </div>
+            <div class="ui-block-b">Team B
+            </div>
+            <div class="ui-block-a">3
+            </div>
+            <div class="ui-block-b">0
+            </div>
+        </div>
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup">
+                <label for="textarea1">
+                </label>
+                <textarea name="" id="textarea1" placeholder=""></textarea>
+            </fieldset>
+        </div>
+        <a data-role="button" href="#page1">
+            Comment
+        </a>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                Live Feed
+            </li>
+            <li data-theme="c">
+                Nice Bycyle Kick!!!
+            </li>
+            <li data-theme="c">
+                Button
+            </li>
+            <li data-theme="c">
+                Button
+            </li>
+        </ul>
+    </div>
+	</div>
+	
+	<!-- TournamentCreate -->
+<div data-role="page" id="tournamentcreate-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="#page1" class="ui-btn-right">
+            Create
+        </a>
+        <h3>
+            Tournament
+        </h3>
+    </div>
+    <div data-role="content">
+        <div data-role="fieldcontain">
+            <label for="selectmenu1">
+            </label>
+            <select name="" data-mini="true">
+                <option value="option1">
+                    Selangor
+                </option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu2">
+            </label>
+            <select name="" data-mini="true">
+                <option value="option1">
+                    Gombak
+                </option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="textinput1">
+                </label>
+                <input name="time_txt" id="textinput1" placeholder="12-12-2012" value="" type="date">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup">
+                <label for="textinput2">
+                </label>
+                <input name="" id="textinput2" placeholder="23:11" value="" type="time">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu3">
+            </label>
+            <select name="">
+                <option value="0">
+                    Tournament Enteries
+                </option>
+                <option value="4">
+                    4 Enteries
+                </option>
+                <option value="8">
+                    8 Enteries
+                </option>
+                <option value="16">
+                    16 Enteries
+                </option>
+            </select>
+        </div>
+        <div data-role="collapsible-set">
+            <div data-role="collapsible" data-collapsed="true">
+                <h3>
+                    Tournament Prize
+                </h3>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup" data-mini="true">
+                        <label for="textinput3">
+                            First Prize
+                        </label>
+                        <input name="" id="textinput3" placeholder="" value="" type="text">
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup" data-mini="true">
+                        <label for="textinput4">
+                            Second Prize
+                        </label>
+                        <input name="" id="textinput4" placeholder="" value="" type="text">
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup" data-mini="true">
+                        <label for="textinput5">
+                            Third Prize
+                        </label>
+                        <input name="" id="textinput5" placeholder="" value="" type="text">
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup" data-mini="true">
+                        <label for="textinput6">
+                            Fourth Prize
+                        </label>
+                        <input name="" id="textinput6" placeholder="" value="" type="text">
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup" data-mini="true">
+                        <label for="textinput6">
+                            Consolation Prize
+                        </label>
+                        <input name="" id="textinput6" placeholder="" value="" type="text">
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+	</div>
+	
+	<!-- Team-Page -->
+	<div data-role="page" id="team-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="#teamcreate-page" data-icon="plus" data-iconpos="right"
+        class="ui-btn-right">
+            New
+        </a>
+        <h3>
+            Team
+        </h3>
+    </div>
+    <div data-role="content">
+        <a data-role="button" href="#page1" data-icon="search" data-iconpos="right">
+            Search Team
+        </a>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                My Team
+            </li>
+            <li data-theme="c">
+                <a href="#teamdetail-page" data-transition="slide">
+                    Team Air Batu Champ-ur
+                </a>
+            </li>
+            <li data-theme="c">
+                <a href="#teamdetail-page" data-transition="slide">
+                    CawanCorner
+                </a>
+            </li>
+        </ul>
+    </div>
+	</div>
+	
+	
+	<!-- teamcreate-page -->
+	<div data-role="page" id="teamcreate-page">
+    <div data-theme="b" data-role="header">
+        <a data-role="button" href="#main-page" class="ui-btn-right">
+            Save
+        </a>
+        <h3>
+            Team
+        </h3>
+    </div>
+    <div data-role="content">
+        <div data-role="navbar" data-iconpos="top">
+            <ul>
+                <li>
+                    <a id="nav_team_detail" data-transition="fade" data-theme="" data-icon="">
+                        Team Detail
+                    </a>
+                </li>
+                <li>
+                    <a id="nav_team_player" data-transition="fade" data-theme="" data-icon="">
+                        Player
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="team_detail_nav">
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="textinput2">
+                    Team Name
+                </label>
+                <input name="" id="textinput2" placeholder="Enter team name" value=""
+                type="text">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="textinput4">
+                    Team Slogan
+                </label>
+                <input name="" id="textinput4" placeholder="Enter Slogan" value="" type="text">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu3">
+            </label>
+            <select name="" id="state_list" data-mini="true">
+               <option value="none">Select list</option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="selectmenu4">
+            </label>
+            <select name="" id="district_list" data-mini="true">
+                <option value="none"> Select District</option>
+            </select>
+        </div>
+        </div>
+    </div>
+	</div>
+  </body>
+</html>
